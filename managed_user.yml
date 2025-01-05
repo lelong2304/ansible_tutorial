@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: true
+ 
+  tasks:
+
+  - name: create lnl user
+    tags: always
+    user:
+      name: lnl
+      groups: root
+
+  - name: add ssh key for lnl
+    tags: always
+    authorized_key:
+      user: lnl
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDbnejB1inyNzOV4S5u7wFPgrbd7PGZ3VfZjuTNu1dzlj3G9jWe0ZFpGKN6pqeqFX2TEMIEFTtRo7b44aUcQWoWsSxneZYQOThqr7I+HYk+jndtIsb3tQxv9vsZKMSMrT8G1iulypS7XGvzb6tCj2Qr3xfI7/jWdr9VSQbZ+sDf+09EkgPiWW76k/MsMv90wyPgqgxySOvF/7C5treWSdx7EeHkRQwnOzc0YMjr5kGSh8OrlbaSCuV9UBf2snBoKRxSrPi8tzlAEtuGy6I6meErejNlGufuoQ2sdRjbovWo9PDMOlLGkZ/CsDc7jH1mPQNEFQC+2V76kB/uHVqBH2LdxjXTX26QIMeOdrDBFEHDOh0vLm0mO+563raY/9+YCPSNz0Ma2VajX48WATfIOeft/AZSXgRWHH9AC/ti6ylo4mqnYbFxuC59+4dE9qj/bRkhi38UKxwGqTJFgl9eO87RROhEZu9StVwDbw2RSMfPI2ekPWhYB7phNrhVq/Zxhes= root@localhost.localdomain"
+
+  - name: add sudoers file for lnl
+    tags: always
+    copy:
+      src: sudoer_lnl
+      dest: /etc/sudoers.d/lnl
+      owner: root
+      group: root

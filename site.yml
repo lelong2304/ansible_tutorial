@@ -23,7 +23,29 @@
 #         - libapache2-mod-php
 #       state: latest
 #     when: ansible_distribution == "Ubuntu"
- 
+
+   - name: Start apache2
+     tags: apache,apache2,ubuntu
+     service:
+       name: apache2
+       state: started
+       enabled: yes
+
+   - name: change e-mail address for admin
+     tags: apache,apache2,ubuntu
+     lineinfile:
+       path: /etc/apache2/sites-enabled/000-default.conf
+       regexp: '^[[:space:]]*ServerAdmin[[:space:]]+webmaster@localhost'
+       line: '\tServerAdmin test@gmail.com'
+     register: apache2_lnl
+
+   - name: Restart httpd
+     tags: apache,apache2,ubuntu
+     service:
+       name: apache2
+       state: restarted
+     when: apache2_lnl.changed
+
    - name: copy html files to server
      tags: apache2,ubuntu
      copy:
